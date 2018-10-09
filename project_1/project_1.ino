@@ -30,8 +30,15 @@ int PIN_ANALOG_IN = 0;
 int PIN_OUT = 2; //PWM PIN
 
 
+
+// Used to cache incoming data
 volatile unsigned int input_buffer[SAMPLE_NUMBER];
+
+// Used for processing incoming data
 volatile float output_buffer[SAMPLE_NUMBER];
+
+// Used to analogally output the processed data
+volatile int output_signal[SAMPLE_NUMBER];
 int pos = 0;
 
 int CONSTANT_OFFSET = 512;
@@ -75,7 +82,7 @@ double processing(unsigned int buffer[], int size)
     // Convert from unsigned int to signed int
     for (int i = 0; i <= size; i++)
     {
-        int signed_int = buffer[i] - CONSTANT_OFFSET;
+        int signed_int = input_buffer[i] - CONSTANT_OFFSET;
         signed_buffer[i] = (float)signed_int;
 
     }
@@ -84,6 +91,15 @@ double processing(unsigned int buffer[], int size)
 
 
     // Cast back to 8bit
+    for (int i = 0; i <= size; i++)
+    {
+        unsigned int value = output_buffer[i] + CONSTANT_OFFSET;
+        int analog_bits = value * (5/1023);
+        analog_bits = map(analog_bits, 0, 1023, 0, 255); // From 0-1023 scale to 0-255 scale
+        output_signal[i] = analog_bits;
+
+    }
+
 
 
     // Pull to show processing is completed
@@ -110,7 +126,7 @@ void setup()
     Timer3.attachInterrupt(input_handler);
     Timer3.setPeriod(1000); //in microseconds
     Serial.println("Starting to sample");
-    output_buffer[0] = 0.00;
+    output_signal[0] = 0.00;
     Timer3.start();
   
 }
@@ -120,7 +136,7 @@ void loop()
 {
 
     // O P R as discussed in class
-    output_data(output_buffer, SAMPLE_NUMBER);
+    output_data(output_signal, SAMPLE_NUMBER);
 
     processing(input_buffer, SAMPLE_NUMBER);
 
