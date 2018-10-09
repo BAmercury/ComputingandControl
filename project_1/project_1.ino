@@ -1,4 +1,7 @@
-#include <TimerThree.h>
+// Using the Uno so:
+#include <TimerOne.h>
+
+//#include <TimerThree.h>
 
 /* Timer3:
 
@@ -14,9 +17,12 @@ https://stackoverflow.com/questions/30263913/how-to-implement-8-bit-dac-digital-
 
 
 
-// Analog Pin 0 for Signal Input
-// https://www.arduino.cc/en/Tutorial/AnalogInputPins
-#define INPUT_PIN 0;
+
+#define INPUT_PIN 0 // Analog Pin 0 for Signal Input https://www.arduino.cc/en/Tutorial/AnalogInputPins
+#define PIN_STAT 12 // Pin will output HIGH when we start and end processing
+#define PIN_ANALOG_IN 0
+#define PIN_OUT 9; // For Arduino UNO
+// #define PIN_OUT 2 // PWM PIN
 
 
 // Recrunch these values after figuring out sampling freq
@@ -24,10 +30,7 @@ https://stackoverflow.com/questions/30263913/how-to-implement-8-bit-dac-digital-
 #define SAMPLE_FREQ 1000 // samples per second (Hz)
 #define SAMPLE_PERIOD 0.001 // Period 1/SAMPLE_FREQ (seconds)
 
-// Pin will output HIGH when we start and end processing
-int PIN_STAT = 12;
-int PIN_ANALOG_IN = 0;
-int PIN_OUT = 2; //PWM PIN
+
 
 
 
