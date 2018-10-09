@@ -18,8 +18,14 @@ https://stackoverflow.com/questions/30263913/how-to-implement-8-bit-dac-digital-
 
 
 // Recrunch these values after figuring out sampling freq
-#define SAMPLE_TIME 50 //in seconds
-#define SAMPLE_NUMBER 100 //number of samples
+#define SAMPLE_PERIOD 1000 // Period (in microseconds)
+#define SAMPLE_TIME 1 // Seconds
+#define SAMPLE_NUMBER 1000 //number of samples
+#define SAMPLE_FREQ 1000 // samples per second (Hz)
+
+
+int buffer[SAMPLE_NUMBER];
+int pos = 0;
 
 void input_handler()
 {
@@ -32,7 +38,7 @@ void setup()
 {
     Serial.begin(115200);
     Timer3.attachInterrupt(input_handler);
-    Timer3.setPeriod(15000) //in microseconds
+    Timer3.setPeriod(1000) //in microseconds
     Timer3.start();
   
 }
