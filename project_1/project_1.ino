@@ -12,8 +12,7 @@ https://stackoverflow.com/questions/30263913/how-to-implement-8-bit-dac-digital-
 
 */
 
-// Arduino Low Pass filter example:
-// https://helpful.knobs-dials.com/index.php/Low-pass_filter#Arduino_example
+
 
 // Analog Pin 0 for Signal Input
 // https://www.arduino.cc/en/Tutorial/AnalogInputPins
@@ -32,17 +31,33 @@ int PIN_ANALOG_IN = 0;
 int PIN_OUT = 2; //PWM PIN
 
 
-unsigned int input_buffer[SAMPLE_NUMBER];
-float output_buffer[SAMPLE_NUMBER];
+volatile unsigned int input_buffer[SAMPLE_NUMBER];
+volatile float output_buffer[SAMPLE_NUMBER];
 int pos = 0;
 
 int CONSTANT_OFFSET = 512;
 
+float lowpass_a_value = 0.015; //Play around with this
+
 void input_handler()
 {
     unsigned int value = analogRead(PIN_ANALOG_IN);
-    buffer[pos++] = value;
+    input_buffer[pos++] = value;
 
+
+}
+
+
+// Arduino Low Pass filter example:
+// https://helpful.knobs-dials.com/index.php/Low-pass_filter#Arduino_example
+void lowpassfilter(float signed_buffer[], int sample_rate, int number_samples, float a_value)
+{
+
+    for (int i = 0; i <= number_samples; i++)
+    {
+        output_buffer[i] = a_value * signed_buffer[i] + (1-a_value) * output_buffer[i-1];
+        output_buffer[i-1] = output_buffer[i];
+    }
 
 }
 
@@ -53,6 +68,8 @@ double processing(unsigned int buffer[], int size)
     // Begin Processing
     digitalWrite(PIN_STAT, HIGH);
 
+    float signed_buffer[size];
+
     // Convert from unsigned int to signed int
     for (int i = 0; i <= size; i++)
     {
@@ -60,8 +77,8 @@ double processing(unsigned int buffer[], int size)
         signed_buffer[i] = (float)signed_int;
 
     }
-    // Run through Low pass filter:
 
+    lowpassfilter(signed_buffer, SAMPLE_FREQ, SAMPLE_NUMBER, lowpass_a_value);
 
 
     // Cast back to 8bit
@@ -91,6 +108,7 @@ void setup()
     Timer3.attachInterrupt(input_handler);
     Timer3.setPeriod(1000); //in microseconds
     Serial.println("Starting to sample");
+    output_buffer[0] = 0.00;
     Timer3.start();
   
 }
