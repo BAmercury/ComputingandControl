@@ -20,10 +20,9 @@ https://stackoverflow.com/questions/30263913/how-to-implement-8-bit-dac-digital-
 
 
 // Recrunch these values after figuring out sampling freq
-#define SAMPLE_PERIOD 1000 // Period (in microseconds)
-#define SAMPLE_TIME 1 // Seconds
 #define SAMPLE_NUMBER 1000 //number of samples
 #define SAMPLE_FREQ 1000 // samples per second (Hz)
+#define SAMPLE_PERIOD 0.001 // Period 1/SAMPLE_FREQ (seconds)
 
 // Pin will output HIGH when we start and end processing
 int PIN_STAT = 12;
@@ -37,7 +36,10 @@ int pos = 0;
 
 int CONSTANT_OFFSET = 512;
 
-float lowpass_a_value = 0.015; //Play around with this
+
+int filter_cutoff = 25;
+float rc_value = 1 / (2*3.14*filter_cutoff);
+float lowpass_a_value = (SAMPLE_PERIOD) / (rc_value + SAMPLE_PERIOD); //Play around with this (dt/RC+dt)
 
 void input_handler()
 {
