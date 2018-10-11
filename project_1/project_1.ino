@@ -1,19 +1,18 @@
 #include <FilterOnePole.h>
 #include <Filters.h>
 #include <TimerThree.h>
-#include <TimerOne.h>
 
 
 #define PIN_STAT 12 // Pin will output HIGH when we start and end processing
-#define PIN_ANALOG_IN 0 // A0 Input Pin
-#define PIN_OUT 3 // PWM PIN
+#define PIN_ANALOG_IN 0 // A1 Input Pin
+#define PIN_OUT 11 // PWM PIN
 
 
 // Recrunch these values after figuring out sampling freq
 #define SAMPLE_FREQ 500 // samples per second (Hz)
 #define SAMPLE_PERIOD_US 2000 // In microseconds for 500 Hz
-#define OUTPUT_PERIOD 2 //ms, 50 Hz
 
+int OUTPUT_PERIOD = 20;
 
 int CONSTANT_OFFSET = 512;
 float lowpass_cutoff = 25.00; // Hz
@@ -22,6 +21,7 @@ FilterOnePole lowpassFilt(LOWPASS, lowpass_cutoff);
 uint8_t int_pwm = 0;
 
 long past_time = 0;
+
 
 void input_handler()
 {
@@ -50,6 +50,8 @@ void input_handler()
     float p_w_m = analog_bits * (51);
     // Cast quantized signal to unsigned 8 bit integer for PWM output
     int_pwm = (uint8_t)p_w_m;
+    //Serial.println(int_pwm);
+    
 
     // Write low to show we are done processing
     digitalWrite(PIN_STAT, LOW);
@@ -80,9 +82,8 @@ void loop()
     // than our interval, update the PWM:
     if (current_time - past_time > OUTPUT_PERIOD)
     {
-        past_time = current_time;
-        Serial.println(int_pwm);
-        analogWrite(PIN_OUT, int_pwm);
+       past_time = current_time;
+       analogWrite(PIN_OUT, int_pwm);
 
     }
 
