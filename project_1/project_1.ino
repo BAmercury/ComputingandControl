@@ -24,20 +24,25 @@ uint8_t int_pwm = 0;
 void input_handler()
 {
 
+    // Read analog input as a 10 bit unsigned integer
     unsigned int value = analogRead(PIN_ANALOG_IN);
+
+    // Digitally remove offset
     int signed_int = value - CONSTANT_OFFSET;
+
+    // Cast to float for math operations
     float signed_value = (float)signed_int;
+
+    // Pass into lowpass filter
     lowpassFilt.input(signed_value);
 
-
+    // Take output from lowpass and add in the offset again
     float val = lowpassFilt.output() + CONSTANT_OFFSET;
-    // Convert from bits to bipolar analog bits (5/1023)
-    //int_pwm = map(val, 0, 1023, 0, 255);
-
-
+    // Convert from 10 Bit scale to Voltage Scale
     float analog_bits = val * (0.00488758553);
     //  Quantize to 8 bits
     float p_w_m = analog_bits * (51);
+    // Cast quantized signal to unsigned 8 bit integer for PWM output
     int_pwm = (uint8_t)p_w_m;
 }
 
