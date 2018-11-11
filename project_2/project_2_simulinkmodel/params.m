@@ -4,11 +4,11 @@ a = 25; % radians
 Fs = 500;% Hz
 T = 1/Fs;
 % Output Signal Period
-U = 1/Fs;
+U = 1/Fs;T
 computation_time = 0.01;
 IRQ_DELAY = T + computation_time; % Interrupt service routine delay + sampling period
 % try K = 10 you get an overshot with time dealy approx
-K = 1;
+K = 5;
 
 
 
