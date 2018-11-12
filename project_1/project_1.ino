@@ -12,7 +12,6 @@
 #define SAMPLE_FREQ 500 // samples per second (Hz)
 #define SAMPLE_PERIOD_US 2000 // In microseconds for 500 Hz
 
-int OUTPUT_PERIOD = 20;
 
 int CONSTANT_OFFSET = 512;
 float lowpass_cutoff = 25.00; // Hz

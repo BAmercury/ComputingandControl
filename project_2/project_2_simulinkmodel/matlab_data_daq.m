@@ -5,11 +5,11 @@ s = daq.createSession('ni')
 s.Rate = 200e3;
 
 
-s.DurationInSeconds = 5;
+s.DurationInSeconds = 10;
 
-ch = s.addAnalogInputChannel('myDAQ1', 'ai0', 'Voltage')
+ch = s.addAnalogInputChannel('myDAQ1', 'ai1', 'Voltage')
 
 [data, timestamps, triggerTime] = s.startForeground;
 
-plot(timestamps, smooth(data));xlabel('Time/sec'); ylabel('Voltage/V');
+plot(timestamps, data);xlabel('Time/sec'); ylabel('Voltage/V');
 title(['Clocked Data Triggered on: ' datestr(triggerTime)])
