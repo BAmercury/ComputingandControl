@@ -77,7 +77,7 @@ title("Arduino feedback with k = 5")
 clc;
 clear all;
 
-M1 = csvread('tek0005.csv');
+M1 = csvread('tek0006.csv');
 time = M1(2000:end,1);
 time_offset = 0 - time(1);
 for i = 1:length(time)
@@ -92,7 +92,7 @@ title("Arduino feedback with k = 5.333")
 clc;
 clear all;
 
-M1 = csvread('tek0006.csv');
+M1 = csvread('tek0007.csv');
 time = M1(2000:end,1);
 time_offset = 0 - time(1);
 for i = 1:length(time)
