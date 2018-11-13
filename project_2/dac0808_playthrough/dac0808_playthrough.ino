@@ -6,30 +6,30 @@
 
 #define SAMPLE_PERIOD_US 2000 // In microseconds for 500 Hz
 
-uint8_t int_pwm = 255;
+uint8_t int_pwm = 51;
 
 unsigned char *p;
 
 void input_handler()
 {
 
-  Serial.println(int_pwm);
-//  int_pwm = 51;
-//  p = int_pwm;
-//  PORTA = p;
+    Serial.println(int_pwm);
+  int_pwm = 51;
+  p = int_pwm;
+  PORTA = p;
 
-  if (int_pwm == 51)
-  {
-    int_pwm = 0;
-    p = int_pwm;
-    PORTA = p;
-  }
-  else
-  {
-    int_pwm = 0;
-    p = int_pwm;
-    PORTA = p;
-  }
+//  if (int_pwm == 51)
+//  {
+//    int_pwm = 0;
+//    p = int_pwm;
+//    PORTA = p;
+//  }
+//  else
+//  {
+//    int_pwm = 51;
+//    p = int_pwm;
+//    PORTA =p; 
+//  }
 }
 
 void setup()

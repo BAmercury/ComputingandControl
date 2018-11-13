@@ -5,7 +5,7 @@ s = daq.createSession('ni')
 s.Rate = 200e3;
 
 
-s.DurationInSeconds = 10;
+s.DurationInSeconds = 5;
 
 ch = s.addAnalogInputChannel('myDAQ1', 'ai1', 'Voltage')
 

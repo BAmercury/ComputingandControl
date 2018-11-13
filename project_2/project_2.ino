@@ -10,7 +10,7 @@ int CONSTANT_OFFSET = 0;
 
 uint8_t desired_8bit = 51; // 1 V signal on an 8 bit scale
 int desired_voltage = 1;
-float desired_10bit = 204.6;
+int desired_10bit = 204;
 uint8_t int_pwm = 51;
 
 
@@ -33,10 +33,11 @@ void input_handler()
 
     // Cast to float for math operations
     float float_measured_value = float(signed_measured_value);
-    Serial.println(float_measured_value);
+    //erial.println(float_measured_value);
 
     // Calculate error from desired and measured values
     float err = desired_10bit - float_measured_value;
+    Serial.println(err);
     //float err = float_measured_value - desired_10bit;
 
 
