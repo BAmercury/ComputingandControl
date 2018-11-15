@@ -5,10 +5,12 @@ Fs = 500;% Hz
 T = 1/Fs;
 % Output Signal Period
 U = 1/Fs;
+%delay = 0;
+delay = 5;
 computation_time = 0.000870; % computations and sampling incorporated measured on arduino
-IRQ_DELAY = computation_time; % Interrupt service routine delay + sampling period
+IRQ_DELAY = computation_time + delay; % Interrupt service routine delay + sampling period
 % try K = 10 you get an overshot with time dealy approx
-K = 5;
+K = 1;
 
 
 

@@ -30,8 +30,8 @@ format short;
     R  = 0.4^2;  %  Gaussian, normal variance of R and  mean v_mean
     v_mean = 0;
 % state noise parameters
-    Q = 0; % if we didnt have any state noise, notice how kf data still thinks there is noise in the system
-    %Q = 0.05; %  Gaussian normal variance of Q with mean z_mean
+    %Q = 0; % if we didnt have any state noise, notice how kf data still thinks there is noise in the system
+    Q = 0.05; %  Gaussian normal variance of Q with mean z_mean
     w_mean = 0;
 % --------------------------------------   
  
@@ -126,5 +126,23 @@ x_t = x_hist - clean_data;
 var(x_t);
 
 
+%% Compute Predicted Covariance
+
+phi_f = [1 T; 0 1];
+psi_f = [(T^2)/2; T]
+prev_p = 1*10^6
+h = [1 0];
+
+for k = 1:1:100
+    P = phi_f*prev_p*transpose(phi_f) + psi_f*(w(k)^2)*transpose(psi_f);
+    K = P*h' * (( h*P*h') + (w(k)^2) )^-1;
+    P = ( eye(2) - K*h)*P
+    prev_P = P;
+end
 
 
+
+% answers:
+PP = [12193 4797; 4797 3154];
+PC = [5494 2161.4; 2161.4 2117.1];
+K = [0.5495; 0.2161];

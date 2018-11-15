@@ -9,7 +9,7 @@
 int CONSTANT_OFFSET = 0;
 
 uint8_t desired_8bit = 51; // 1 V signal on an 8 bit scale
-int desired_voltage = 1;
+int desired_voltage = 1.333;
 int desired_10bit = 204;
 uint8_t int_pwm = 51;
 
@@ -27,6 +27,7 @@ void input_handler()
 
 
     unsigned int measured_value = analogRead(PIN_ANALOG_IN);
+    Serial.println(measured_value);
 
     // Digitally remove any offset
     int signed_measured_value = measured_value - CONSTANT_OFFSET;
@@ -37,7 +38,7 @@ void input_handler()
 
     // Calculate error from desired and measured values
     float err = desired_10bit - float_measured_value;
-    Serial.println(err);
+    //Serial.println(err);
     //float err = float_measured_value - desired_10bit;
 
 
@@ -57,6 +58,7 @@ void input_handler()
     // Cast quantized signal to unsigned 8 bit integer for PWM output
     int_pwm = (uint8_t)p_w_m;
     // Write low to show we are done processing
+    delay(10000);
     digitalWrite(PIN_STAT, LOW);
 }
 
