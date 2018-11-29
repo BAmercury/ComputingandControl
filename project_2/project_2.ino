@@ -9,7 +9,7 @@
 int CONSTANT_OFFSET = 0;
 
 uint8_t desired_8bit = 51; // 1 V signal on an 8 bit scale
-int desired_voltage = 1.333;
+int desired_voltage = 1;
 int desired_10bit = 204;
 uint8_t int_pwm = 51;
 
