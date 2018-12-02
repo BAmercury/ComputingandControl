@@ -17,5 +17,9 @@
   <ItemGroup>
     <None Include="UltraSonicLogger_Firmware.ino" />
   </ItemGroup>
- 
+  <ItemGroup>
+    <ClInclude Include="__vm\.UltraSonicLogger_Firmware.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

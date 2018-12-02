@@ -17,11 +17,13 @@ namespace UltraSonicLogger
 
         public static List<List<double>> data = new List<List<double>>();
 
-        public static string directory = "C:\\Desktop";
+        public static string directory = "C:\\Users\\Merc.MERCURY\\Desktop\\";
 
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Press any key to start");
+            Console.ReadKey(true);
             SerialPortStream port = find_ports();
             Begin_Test(port);
             Console.WriteLine("What would you like to call the file?: ");
@@ -36,7 +38,7 @@ namespace UltraSonicLogger
 
         public static void Begin_Test(SerialPortStream port)
         {
-            port.Write("<begin>");
+            port.Write("Begin");
 
             bool test_in_progress = true;
             while (test_in_progress)
