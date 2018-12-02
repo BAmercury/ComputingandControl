@@ -4,6 +4,7 @@
  Author:	Bhautik (Brian) Amin
 */
 #include <TimerThree.h>
+#include <LinkedList.h>
 
 
 #define PIN_IN 0
@@ -12,6 +13,11 @@
 
 
 long start_time = 0;
+int amount_of_samples = 5;
+int counter = 0;
+
+LinkedList<long> duration_data = LinkedList<long>();
+LinkedList<long> time_stamps = LinkedList<long>();
 
 void wait_for_software()
 {
@@ -44,14 +50,22 @@ void input_handler()
 	//delayMicroseconds(100);
 	digitalWrite(PIN_OUT, HIGH);
 	delayMicroseconds(10);
-  digitalWrite(PIN_OUT, LOW);
+	digitalWrite(PIN_OUT, LOW);
 
 	unsigned long duration = pulseIn(PIN_IN, HIGH);
-
-	Serial.println(duration);
-	Serial.println(",");
+	duration_data.add(duration);
 	long timestamp = millis() - start_time;
-	Serial.println(timestamp);
+	time_stamps.add(timestamp);
+
+	if (counter == amount_of_samples)
+	{
+		Serial.println("Dump");
+		counter = 0;
+	}
+	else{
+		counter++;
+	}
+
 
 
 }
