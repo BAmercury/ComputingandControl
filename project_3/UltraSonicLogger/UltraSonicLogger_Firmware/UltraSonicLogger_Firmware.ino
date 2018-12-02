@@ -4,20 +4,23 @@
  Author:	Bhautik (Brian) Amin
 */
 #include <TimerThree.h>
-#include <LinkedList.h>
+//#include <LinkedList.h>
 
 
-#define PIN_IN 0
+#define PIN_IN 9
 #define PIN_OUT 11
-#define SAMPLE_PERIOD_US 2000 // In microseconds for 500 Hz
+#define SAMPLE_PERIOD_US 5000 // In microseconds for 500 Hz
 
 
 long start_time = 0;
-int amount_of_samples = 5;
+int amount_of_samples = 10;
 int counter = 0;
 
-LinkedList<long> duration_data = LinkedList<long>();
-LinkedList<long> time_stamps = LinkedList<long>();
+//LinkedList<long> duration_data = LinkedList<long>();
+//LinkedList<long> time_stamps = LinkedList<long>();
+
+unsigned long duration = 0;
+long timestamp = 0;
 
 void wait_for_software()
 {
@@ -47,24 +50,14 @@ void input_handler()
 {
 
 	//digitalWrite(PIN_OUT, LOW);
-	//delayMicroseconds(100);
+	//delayMicroseconds(5);
 	digitalWrite(PIN_OUT, HIGH);
 	delayMicroseconds(10);
 	digitalWrite(PIN_OUT, LOW);
 
-	unsigned long duration = pulseIn(PIN_IN, HIGH);
-	duration_data.add(duration);
-	long timestamp = millis() - start_time;
-	time_stamps.add(timestamp);
 
-	if (counter == amount_of_samples)
-	{
-		Serial.println("Dump");
-		counter = 0;
-	}
-	else{
-		counter++;
-	}
+
+
 
 
 
@@ -76,7 +69,9 @@ void input_handler()
 
 void setup() 
 {
+
 	pinMode(PIN_OUT, OUTPUT);
+    pinMode(PIN_IN, INPUT);
 	Serial.begin(115200);
 
 	wait_for_software();
@@ -84,6 +79,23 @@ void setup()
 }
 
 
-void loop() {
+void loop() 
+{
+	if (counter == amount_of_samples)
+	{
+		Serial.println("Done");
+		counter = 0;
+	}
+	else
+	{
+		duration = pulseIn(PIN_IN, HIGH);
+	    //duration_data.add(duration);
+	    timestamp = millis() - start_time;
+	    //time_stamps.add(timestamp);
+		Serial.println(duration);
+		Serial.println(",");
+		Serial.println(timestamp);
+		counter++;
+	}
   
 }
