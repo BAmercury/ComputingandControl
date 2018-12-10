@@ -1,50 +1,13 @@
-#include <TimerThree.h>
+
 
 #define PIN_IN 9
 #define PIN_OUT 11
 #define PIN_LED 12
-#define SAMPLE_PERIOD_US 9000 // In microseconds
 
 
 long start_time = 0;
-int amount_of_samples = 20;
+int amount_of_samples = 100;
 int counter = 0;
-
-void input_handler()
-{
-    digitalWrite(PIN_OUT, HIGH);
-    delayMicroseconds(10);
-    delayWrite(PIN_OUT, LOW);
-}
-
-void wait_for_software()
-{
-    bool waiting = true;
-
-    while (waiting)
-    {
-        recieve_commands();
-        if (newData == true)
-        {
-            parseCommands();
-            newData = false;
-        }
-
-        if (command == "1")
-        {
-            waiting = false;
-            break;
-        }
-    }
-    Timer3.attachInterrupt(input_handler);
-    Timer3.setPeriod(SAMPLE_PERIOD_US);
-    start_time = millis();
-    counter = 0;
-    Timer3.start();
-
-}
-
-
 /*
 Variables and Commands used to send serial commands to the arduino
 */
@@ -88,6 +51,34 @@ void recieve_commands()
 
 	}
 }
+
+void wait_for_software()
+{
+    bool waiting = true;
+
+    while (waiting)
+    {
+        recieve_commands();
+        if (newData == true)
+        {
+            parseCommands();
+            newData = false;
+        }
+
+        if (command == "1")
+        {
+            waiting = false;
+            break;
+        }
+    }
+
+    start_time = millis();
+    counter = 0;
+    digitalWrite(PIN_LED, HIGH);
+    command = "0";
+
+}
+
 void parseCommands()
 {
 	command = recievedChars;
@@ -97,6 +88,12 @@ void parseCommands()
 
 void setup()
 {
+    Serial.begin(115200);
+    pinMode(PIN_IN, INPUT);
+    pinMode(PIN_LED, OUTPUT);
+    pinMode(PIN_OUT, OUTPUT);
+
+    wait_for_software();
 
 }
 
@@ -111,11 +108,14 @@ void loop()
     }
     else
     {
+        digitalWrite(PIN_OUT, HIGH);
+        delayMicroseconds(10);
+        digitalWrite(PIN_OUT, LOW);
         unsigned long duration = pulseInLong(PIN_IN, HIGH);
         Serial.print(duration);
-        Serial.println(",");
+        Serial.print(",");
         long timestamp = millis() - start_time;
-        Serial.println(timestamp);
+        Serial.print(timestamp);
         Serial.println();
         counter++;
 

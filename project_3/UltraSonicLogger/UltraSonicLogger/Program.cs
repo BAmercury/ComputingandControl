@@ -38,7 +38,7 @@ namespace UltraSonicLogger
                 {
                     string s = port.ReadLine();
                     s = Regex.Replace(s, @"\r", string.Empty);
-                    if (s == "done")
+                    if (s == "Done")
                     {
                         collecting_data = false;
                         break;
