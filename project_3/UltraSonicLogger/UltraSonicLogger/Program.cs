@@ -19,7 +19,7 @@ namespace UltraSonicLogger
             Console.WriteLine("Done Collecting Data, what should the file be called?: ");
             string file_name = Console.ReadLine();
             write_file(data, file_name);
-            Console.WriteLine("Press any key to exit");
+            Console.WriteLine("Press any B to exit, press A to restart");
             Console.ReadKey(true);
         }
 
